@@ -1,0 +1,26 @@
+{
+  "name": "py-personal-finance-tracker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.py",
+  "scripts": {
+    "init:env": "bash ./scripts/create-virtual-env.sh",
+    "prepare": "npm install -D git-cz husky && husky install",
+    "setup": "install-first-required-pkgs.bat && npm run prepare",
+    "commit": "git-cz"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/duchnv-vn/py-personal-finance-tracker.git"
+  },
+  "author": "duchnv-vn",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/duchnv-vn/py-personal-finance-tracker/issues"
+  },
+  "homepage": "https://github.com/duchnv-vn/py-personal-finance-tracker#readme",
+  "devDependencies": {
+    "git-cz": "^4.9.0",
+    "husky": "^8.0.3"
+  }
+}

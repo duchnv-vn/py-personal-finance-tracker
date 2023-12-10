@@ -1,0 +1,1 @@
+activate.bat && pip install pipenv && pipenv install
