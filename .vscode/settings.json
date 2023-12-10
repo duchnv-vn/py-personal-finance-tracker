@@ -1,0 +1,17 @@
+{
+    "prettier.endOfLine": "lf",
+    "editor.defaultFormatter": "ms-python.autopep8",
+    "[shellscript]": {
+        "editor.defaultFormatter": "ms-python.autopep8"
+    },
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true,
+        "node_modules": true,
+        "virtual-environment": true
+    }
+}
