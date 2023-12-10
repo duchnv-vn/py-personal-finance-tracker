@@ -2,7 +2,7 @@
   "name": "py-personal-finance-tracker",
   "version": "1.0.0",
   "description": "",
-  "main": "main.py",
+  "main": "manage.py",
   "scripts": {
     "init:env": "bash ./scripts/create-virtual-env.sh",
     "prepare": "npm install -D git-cz husky && husky install",
