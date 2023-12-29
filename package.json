@@ -7,7 +7,9 @@
     "init:env": "bash ./scripts/create-virtual-env.sh",
     "prepare": "npm install -D git-cz husky && husky install",
     "setup": "install-first-required-pkgs.bat && npm run prepare",
-    "commit": "git-cz"
+    "commit": "git-cz",
+    "csv:new": "py csv-app/new-csv-source.py",
+    "csv:add": "py csv-app/add-data-csv-source.py"
   },
   "repository": {
     "type": "git",

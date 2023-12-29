@@ -2,7 +2,7 @@
     "prettier.endOfLine": "lf",
     "editor.defaultFormatter": "ms-python.autopep8",
     "[shellscript]": {
-        "editor.defaultFormatter": "ms-python.autopep8"
+        "editor.defaultFormatter": "foxundermoon.shell-format"
     },
     "files.exclude": {
         "**/.git": true,
