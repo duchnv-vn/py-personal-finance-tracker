@@ -35,8 +35,8 @@ HEADER_NAMES = (
 
 with open(f'{ROOT_DIR}/{FILE_NAME}', mode="w") as file:
     csv.register_dialect('custom_dialect', lineterminator='\n')
-    csvWriter = csv.writer(file, dialect='custom_dialect')
+    csv_writer = csv.writer(file, dialect='custom_dialect')
 
-    csvWriter.writerow((name for (key, name) in HEADER_NAMES))
+    csv_writer.writerow((name for (key, name) in HEADER_NAMES))
 
 print(f'=== SUCCESSFULLY CREATE FILE: {FILE_NAME} ===')
