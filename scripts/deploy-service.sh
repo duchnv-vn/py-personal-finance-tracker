@@ -7,7 +7,6 @@ variables["stage"]=STAGE_NAME
 variables["region"]=REGION_NAME
 variables["functions"]=FUNCTION_NAMES
 
-declare -i argument_index=1
 for argument in "$@"; do
     if [[ $argument == *"="* ]]; then
         argument_label=${argument%=*}
@@ -19,8 +18,6 @@ for argument in "$@"; do
     if [[ -n ${variables[$argument_label]} ]]; then
         declare ${variables[$argument_label]}="${argument#$argument_label=}"
     fi
-
-    argument_index=argument_index+1
 done
 
 if [ -z "$SERVICE_NAME" ]; then
