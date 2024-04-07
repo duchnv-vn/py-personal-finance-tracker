@@ -23,7 +23,7 @@ layers:
     description: Layer used for personal expense services
     compatibleArchitectures:
       - x86_64
-    retain: true
+    retain: false
     allowedAccounts:
       - "*"
 
