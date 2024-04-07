@@ -1,5 +1,6 @@
 virtual-environment/
 node_modules/
+python_libs/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

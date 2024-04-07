@@ -12,7 +12,8 @@
     "csv:add": "py csv-app/add-data-csv-source.py",
     "dev-user-auth:set": "bash ./scripts/set-session-token.sh",
     "service:deploy": "bash ./scripts/deploy-service.sh",
-    "layer:zip": "bash ./scripts/zip-layer.sh"
+    "layer:zip": "bash ./scripts/zip-layer.sh",
+    "layer:create": "bash ./scripts/create-layer.sh"
   },
   "repository": {
     "type": "git",
