@@ -1,4 +1,4 @@
 # py-personal-finance-tracker
 
-## References
-1. https://data-flair.training/blogs/expense-tracker-python
+## Require packages:
+- Zip cli sdk (https://fossies.org/windows/misc/zip300xn-x64.zip): Run `choco install zip`

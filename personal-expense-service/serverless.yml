@@ -1,0 +1,63 @@
+service: personal-expense
+frameworkVersion: "3"
+useDotenv: true
+
+custom:
+  region: ${opt:region}
+  accountId: ${aws:accountId}
+
+provider:
+  name: aws
+  runtime: python3.11
+  httpApi:
+    payload: "2.0"
+
+package:
+  individually: true
+  patterns:
+    - "!*/**"
+
+layers:
+  PersonalExpenseService:
+    path: layers/zip-files
+    description: Layer used for personal expense services
+    compatibleArchitectures:
+      - x86_64
+    retain: true
+    allowedAccounts:
+      - "*"
+
+functions:
+  createExpense:
+    handler: create-expense.createExpense
+    layers:
+      - arn:aws:lambda:${self:custom.region}:${self:custom.accountId}:layer:PersonalExpenseService:1
+    package:
+      individually: true
+      patterns:
+        - "./create-expense.py"
+    events:
+      - httpApi:
+          path: /expense
+          method: post
+
+resources:
+  Resources:
+    personalExpenseBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: personal-expense
+    personalExpenseDB:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: personalExpenses
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: RANGE
+        BillingMode: PAY_PER_REQUEST
+        ProvisionedThroughput:
+          ReadCapacityUnits: 10
+          WriteCapacityUnits: 10
