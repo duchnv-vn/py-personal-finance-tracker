@@ -9,8 +9,6 @@ custom:
 provider:
   name: aws
   runtime: python3.11
-  httpApi:
-    payload: "2.0"
 
 package:
   individually: true
@@ -18,20 +16,22 @@ package:
     - "!*/**"
 
 layers:
-  PersonalExpenseService:
-    path: layers/zip-files
-    description: Layer used for personal expense services
+  DynamoDB:
+    description: DynamoDB layer of personal expenses
     compatibleArchitectures:
       - x86_64
     retain: false
     allowedAccounts:
       - "*"
+    package:
+      artifact: layers/zip-files/DynamoDBLambdaLayer.zip
 
 functions:
   createExpense:
-    handler: create-expense.createExpense
+    handler: create-expense.handler
     layers:
-      - arn:aws:lambda:${self:custom.region}:${self:custom.accountId}:layer:PersonalExpenseService:1
+      - { Ref: DynamoDBLambdaLayer }
+    role: createExpenseRole
     package:
       individually: true
       patterns:
@@ -43,21 +43,63 @@ functions:
 
 resources:
   Resources:
-    personalExpenseBucket:
-      Type: AWS::S3::Bucket
-      Properties:
-        BucketName: personal-expense
     personalExpenseDB:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: personalExpenses
+        TableName: personal_expenses
         AttributeDefinitions:
           - AttributeName: id
+            AttributeType: N
+          - AttributeName: date
+            AttributeType: S
+          - AttributeName: category
             AttributeType: S
         KeySchema:
+          - AttributeName: date
+            KeyType: HASH
           - AttributeName: id
             KeyType: RANGE
-        BillingMode: PAY_PER_REQUEST
+        LocalSecondaryIndexes:
+          - IndexName: category_name_index
+            KeySchema:
+              - AttributeName: date
+                KeyType: HASH
+              - AttributeName: category
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+
         ProvisionedThroughput:
-          ReadCapacityUnits: 10
-          WriteCapacityUnits: 10
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5
+    createExpenseRole:
+      Type: AWS::IAM::Role
+      Properties:
+        RoleName: createExpenseRole
+        AssumeRolePolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            - Effect: Allow
+              Principal:
+                Service:
+                  - lambda.amazonaws.com
+              Action: sts:AssumeRole
+        Policies:
+          - PolicyName: createExpenseConnectDynamodb
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+                - Effect: Allow
+                  Action:
+                    - "dynamodb:BatchGet*"
+                    - "dynamodb:DescribeStream"
+                    - "dynamodb:DescribeTable"
+                    - "dynamodb:Get*"
+                    - "dynamodb:Query"
+                    - "dynamodb:Scan"
+                    - "dynamodb:BatchWrite*"
+                    - "dynamodb:CreateTable"
+                    - "dynamodb:Delete*"
+                    - "dynamodb:Update*"
+                    - "dynamodb:PutItem"
+                  Resource: "arn:aws:dynamodb:${self:custom.region}:${self:custom.accountId}:table/personal_expenses"
